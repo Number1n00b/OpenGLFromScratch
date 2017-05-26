@@ -40,22 +40,31 @@ void Mesh::InitMesh(const IndexedModel& model) {
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[POSITION_VB]);
 	//Puts the data into the buffer.
-	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
+
+    //This function defines the layout of each vertexBufferObject in the VertexArrayObject.
+    //Arg list:
+    //0: Which attribute number. @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ @NOTE: This is binded in the shader program itself. See line 25-27 in Shader.cpp. @@@@@@@@@
+    //1: Number of values per item. e.g. 3 Means that each object is a vec3 made from 3 GL_FLOAT(s) in the buffer
+    //2: The type of value to create objects from.
+    //3: Should values be normalised?
+    //4: Stride, how much data to skip between jumps.
+    //5: Offset of the first component.
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[TEXCOORD_VB]);
-	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.positions[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.positions[0], GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[NORMAL_VB]);
-	glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(model.normals[0]), &model.normals[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(model.normals[0]), &model.normals[0], GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vertexArrayBuffers[INDEX_VB]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(0);
 }
@@ -63,6 +72,9 @@ void Mesh::InitMesh(const IndexedModel& model) {
 
 void Mesh::Draw() {
 	glBindVertexArray(m_vertexArrayObject);
+
+    //Use this to draw wireframes.
+    //glPolygonMode(GL_FRONT, GL_LINE);
 
 	glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, 0);
 

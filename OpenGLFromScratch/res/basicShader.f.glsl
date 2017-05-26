@@ -13,6 +13,7 @@ void main(){
     //@Hardcoded: Should import this with a uniform.
     vec3 lightDirection = vec3(0, 0, 1);
 
+	//Lighting is applied in the second line.
     FragColor = texture2D(diffuse, texCoord0)
         * clamp(dot(-lightDirection, normal0), 0.0, 1.0);
 }

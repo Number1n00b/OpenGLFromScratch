@@ -13,6 +13,7 @@ Camera::Camera(const glm::vec3& pos, glm::vec3 look_direction, glm::vec3 up_dire
 	m_Perspective = glm::perspective(fov * m_ZoomFactor, aspect, z_near, z_far);
 
 	m_Position = m_StartingPos = pos;
+    m_DesiredLookDirection = look_direction;
 	m_LookDirection = m_StartingLookDir = look_direction;
 	m_up = m_StartingUp = up_direction;
 
@@ -24,8 +25,8 @@ Camera::Camera(const glm::vec3& pos, glm::vec3 look_direction, glm::vec3 up_dire
     m_ReferenceMousePositionX = Window::window_width / 2;
     m_ReferenceMousePositionY = Window::window_height / 2;
 
-    m_XSensitivity = 0.013;
-    m_YSensitivity = 0.013;
+    m_XSensitivity = 0.06;
+    m_YSensitivity = 0.06;
 
     m_MouseMoved = false;
 
@@ -45,13 +46,23 @@ void Camera::HandleMouseMovement() {
 
     if (m_MouseMoved) {
         if (!isnan(m_MouseDelta.x) && !isnan(m_MouseDelta.y)) {
-            //Horizontal rotation.
-            m_LookDirection = glm::mat3(glm::rotate(-m_MouseDelta.x * m_XSensitivity, m_up)) * m_LookDirection;
+            glm::vec3 horizontal_axis = glm::cross(m_LookDirection, m_up);
+            glm::vec3 vertical_axis = m_up;
 
-            glm::vec3 vertical_rotation_axis = glm::cross(m_LookDirection, m_up);
+            //Calculate the new look direction.
+            //Rotate horizontaly. (About the vertical axis)
+            m_DesiredLookDirection = glm::mat3(glm::rotate(-m_MouseDelta.x * m_XSensitivity, vertical_axis)) * m_LookDirection;
 
-            //Vertical rotation.
-            m_LookDirection = glm::mat3(glm::rotate(-m_MouseDelta.y * m_YSensitivity, vertical_rotation_axis)) * m_LookDirection;
+            //Rotate vertically. (About the horisontal axis)
+            m_DesiredLookDirection = glm::mat3(glm::rotate(-m_MouseDelta.y * m_YSensitivity, horizontal_axis)) * m_DesiredLookDirection;
+
+            //Ensure look direction cannot go over the top, or below the bottom.
+            float angle = Math::angle_between_vectors(m_DesiredLookDirection, vertical_axis);
+
+            //If the angle is out of bounds, dont change the look direction at all.
+            if (angle >= 178 || angle <= 2) {
+                m_DesiredLookDirection = m_LookDirection;
+            }
 
             //Reset mouse movement so that the cam doesnt move automatically once mouse stops.
             m_MouseDelta = glm::vec2(0, 0);
@@ -99,6 +110,11 @@ void Camera::HandleKeyInput() {
 
 void Camera::Update() {
     HandleKeyInput();
+    UpdateRotation();
+}
+
+void Camera::UpdateRotation() {
+    m_LookDirection = m_DesiredLookDirection;
 }
 
 void Camera::NotifyKeyEvent(SDL_Event e) {
@@ -134,9 +150,8 @@ void Camera::NotifyMouseEvent(SDL_Event e) {
                 glm::vec2 relative = glm::vec2(e.motion.x - m_ReferenceMousePositionX, e.motion.y - m_ReferenceMousePositionY);
                 m_MouseDelta = glm::normalize(relative);
 
-                m_MouseMoved = true;
-
                 HandleMouseMovement();
+                m_MouseMoved = true;
             }
             
             break;

@@ -63,6 +63,8 @@ class Camera : public MouseListener, public KeyboardListener
 		glm::vec3 m_LookDirection;
 		glm::vec3 m_up;
 
+        glm::vec3 m_DesiredLookDirection;
+
         //The initial values for perspective, so that resetting is always consistant.
         glm::vec3 m_StartingPos;
         glm::vec3 m_StartingLookDir;
@@ -72,6 +74,7 @@ class Camera : public MouseListener, public KeyboardListener
         glm::vec2 m_MouseDelta;
         bool m_MouseMoved;
 
+        void UpdateRotation();
 		void UpdatePerspective();
 
         //Handleing of input events.

@@ -26,6 +26,8 @@ Class Member Variables:
 15) Load .mtl files and learn how to use them.
 
 18) Fix camera movement jitter / stuttering and check why normalise sometimes returns NAN in camera.
+    This is due to the update being called at irregular intervals. Having a fixed - timestep loop in main would fix this issue.
+    (Linear interpolation).
 
 19) Create spawner class to spawn objects. (Factory Pattern?)
 
@@ -65,6 +67,7 @@ To make the camera track an object, simply set its lookDirection to object.pos -
 #include "WorldObject.h"
 #include "Player.h"
 #include "OscilatingObject.h"
+#include "RotatingObject.h"
 
 //Input
 #include "InputEventHandler.h"
@@ -99,7 +102,7 @@ using std::cout;
 using std::endl;
 using glm::vec3;
 
-void Initialise() {
+void Initialise_Display() {
     //Craete the window and context.
     main_window = new Display(Window::window_width, Window::window_height, "Main window.");
 
@@ -121,8 +124,6 @@ void Initialise() {
 
     //Set the camera for our drawable class as the main camera.
     WorldObject::SetCamera(main_camera);
-
-    Game::ResumeGame();
 }
 
 
@@ -144,12 +145,13 @@ void CreateWorldObjects() {
 
     //Load the game object meshes.
     Mesh* monkey_mesh = new Mesh("./res/monkey3.obj");
-    Mesh* car_mesh = new Mesh("./res/myCar.obj");
+    Mesh* car_mesh = monkey_mesh;//new Mesh("./res/myCar.obj");
     Mesh* plane_mesh = new Mesh("./res/6x6_plane.obj");
 
     //This transform ensures the monkeys face the right direction on spawn.
     Transform oriented_monkey;
-    oriented_monkey.SetRotation(-3.14 / 2, 3.14, 0);
+    oriented_monkey.SetPos(0, 0, 20);
+    oriented_monkey.SetRotation(0, 3.14, 0);
 
     //Create our drawable game objects.
     vec3 x_axis = vec3(1, 0, 0);
@@ -168,17 +170,34 @@ void CreateWorldObjects() {
     WorldObject* monkey_z = new OscilatingObject("Monkey Number Three", standard_shader, z_tex, monkey_mesh, oriented_monkey, z_axis, speed, amplitude);
     world_objects.push_back(monkey_z);
 
+    //Create some rotating cars on the side too.
+    Transform left_car_t;
+    left_car_t.SetPos(-10, 0, 1);
+    WorldObject* left_car = new RotatingObject("Left spinny car", standard_shader, blue, car_mesh, left_car_t, z_axis, speed);
+    world_objects.push_back(left_car);
+
+    Transform right_car_t;
+    right_car_t.SetPos(10, 0, 1);
+    WorldObject* right_car = new RotatingObject("Right spinny car", standard_shader, blue, car_mesh, right_car_t, -z_axis, speed);
+    world_objects.push_back(right_car);
+
+    //Create a standing monkey.
+    Transform still_pos;
+    still_pos.SetPos(5, -1, -10);
+    WorldObject* still_monkey = new WorldObject("Monkey Still", standard_shader, z_tex, monkey_mesh, still_pos);
+    world_objects.push_back(still_monkey);
+
     //Create a plane. Floor?
     vec3 floor_pos = vec3(0, -3, 0);
-    WorldObject* floor = new OscilatingObject("Monkey Number Three", standard_shader, z_tex, monkey_mesh, oriented_monkey, z_axis, speed, amplitude);
+    WorldObject* floor = new OscilatingObject("Floor", standard_shader, z_tex, monkey_mesh, oriented_monkey, z_axis, speed, amplitude);
     world_objects.push_back(floor);
 
     //Create the player.
-    /*Transform car_behind;
-    car_behind.SetPos(0, -2, 20);
-    car_behind.SetRotation(0, 3.14/2, 0);
-    Player* car = new Player("Player One", standard_shader, blue, car_mesh, car_behind, event_handler);
-    world_objects.push_back(car);*/
+    Transform car_pos;
+    car_pos.SetPos(-5, -1, -10);
+    car_pos.SetRotation(0, 3.14/2, 0);
+    Player* car = new Player("Player One", standard_shader, blue, car_mesh, car_pos, event_handler);
+    world_objects.push_back(car);
 }
 
 
@@ -186,8 +205,9 @@ int main(int argc, char *argv[]) {
 	cout << "====== Starting Program... ======" << endl;
 
     //Initalise the basics, Camera, UI, window, eventhandler.
-    Initialise();
+    Initialise_Display();
 
+    //Create all the objects in the world. 
     CreateWorldObjects();
     for (std::vector<WorldObject*>::iterator it = world_objects.begin(); it != world_objects.end(); it++) {
         cout << "Name: " << (*it)->name << endl;
@@ -205,6 +225,9 @@ int main(int argc, char *argv[]) {
     int num_frames = 0;
     int fps_timer_start = prev_time;
     int fps_timer_end;
+
+    //Start the game.
+    Game::ResumeGame();
 
     //The main loop!
 	while (!Game::should_close) {

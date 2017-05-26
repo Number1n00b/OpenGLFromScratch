@@ -59,7 +59,7 @@ OBJModel::OBJModel(const std::string& fileName)
     //@HACK @FIXME @INCOMPLETE. 
     //@HACK @FIXME @INCOMPLETE. 
     //UV's currently cause segfault for out of bounds access, so I just disable them.
-    //hasUVs = false;
+    hasUVs = false;
     //@HACK @FIXME @INCOMPLETE. 
     //@HACK @FIXME @INCOMPLETE. 
     //@HACK @FIXME @INCOMPLETE. 

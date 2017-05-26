@@ -22,6 +22,7 @@ Shader::Shader(const std::string& fileName)
 	}
 
 	//Ensure 'position' is spelled the same as in the shader program itself.
+    //These match up to the items defined in Mesh.cpp, each one is a VBO inside the VAO
 	glBindAttribLocation(m_program, 0, "position");
 	glBindAttribLocation(m_program, 1, "texCoord");
 	glBindAttribLocation(m_program, 2, "normal");

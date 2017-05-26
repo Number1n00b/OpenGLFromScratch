@@ -36,7 +36,13 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="OscilatingObject.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="OscilatingObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatingObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h" />
@@ -82,6 +88,10 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="OscilatingObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="RotatingObject.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
