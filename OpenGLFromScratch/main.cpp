@@ -244,6 +244,17 @@ int main(int argc, char *argv[]) {
 
         time_since_last_frame += dt;
 
+        //Do physics updates
+        if (game_state == RUNNING) {
+            //Update all our objects.
+            for (std::vector<WorldObject*>::iterator it = world_objects.begin(); it != world_objects.end(); it++) {
+                (*it)->Update();
+            }
+
+            //Update the main camera.
+            main_camera->Update();
+        }
+
         //Cap FPS and render only when needed. @NOTE: Physics updates done only on every render call.
         if (time_since_last_frame >= MS_PER_FRAME) {
             num_frames++;
@@ -254,17 +265,6 @@ int main(int argc, char *argv[]) {
                 //cout << "FPS: " << (float(num_frames) / (float(fps_timer_end - fps_timer_start) / 1000.0)) << endl;
                 fps_timer_start = fps_timer_end;
                 num_frames = 0;
-            }
-
-            //Do physics updates
-            if (game_state == RUNNING) {
-                //Update all our objects.
-                for (std::vector<WorldObject*>::iterator it = world_objects.begin(); it != world_objects.end(); it++) {
-                    (*it)->Update();
-                }
-
-                //Update the main camera.
-                main_camera->Update();
             }
 
             //Render
