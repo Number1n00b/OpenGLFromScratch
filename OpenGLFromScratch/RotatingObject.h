@@ -19,7 +19,6 @@ public:
 
 private:
     float m_Speed;
-    float m_Counter;
     glm::vec3 m_start_angle;
 
     glm::vec3 m_Axis;

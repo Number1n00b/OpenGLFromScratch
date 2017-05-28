@@ -31,6 +31,15 @@ Class Member Variables:
 
 19) Create spawner class to spawn objects. (Factory Pattern?)
 
+
+
+=========== WARNING ============
+
+For all my rotating and oscilating objects, and possibly some others, I am incrementing their counters indefinately. (Mostly in their angles).
+When this runs for a long time it could cause overflow and crash.
+
+=========== WARNING ============
+
 NOTES:
 To make the camera track an object, simply set its lookDirection to object.pos - cam.pos
 */
@@ -157,28 +166,30 @@ void CreateWorldObjects() {
     vec3 x_axis = vec3(1, 0, 0);
     vec3 y_axis = vec3(0, 1, 0);
     vec3 z_axis = vec3(0, 0, 1);
-    float speed = 0.003;
-    float amplitude = 5;
+    float speed = 3;
+    float amplitude = 6;
 
     //Create oscilating monkeys for perspective.
     WorldObject* monkey_x = new OscilatingObject("Monkey Number One", standard_shader, x_tex, monkey_mesh, oriented_monkey, x_axis, speed, amplitude);
     world_objects.push_back(monkey_x);
 
-    WorldObject* monkey_y = new OscilatingObject("Monkey Number Two", standard_shader, y_tex, monkey_mesh, oriented_monkey, y_axis, speed, amplitude);
+    WorldObject* monkey_y = new OscilatingObject("Monkey Number Two", standard_shader, y_tex, monkey_mesh, oriented_monkey, y_axis, speed, amplitude/2);
     world_objects.push_back(monkey_y);
 
-    WorldObject* monkey_z = new OscilatingObject("Monkey Number Three", standard_shader, z_tex, monkey_mesh, oriented_monkey, z_axis, speed, amplitude);
+    WorldObject* monkey_z = new OscilatingObject("Monkey Number Three", standard_shader, z_tex, monkey_mesh, oriented_monkey, z_axis, speed, amplitude/3);
     world_objects.push_back(monkey_z);
 
     //Create some rotating cars on the side too.
+    float rot_speed = 240; //deg/sec
+
     Transform left_car_t;
     left_car_t.SetPos(-10, 0, 1);
-    WorldObject* left_car = new RotatingObject("Left spinny car", standard_shader, blue, car_mesh, left_car_t, z_axis, speed);
+    WorldObject* left_car = new RotatingObject("Left spinny car", standard_shader, blue, car_mesh, left_car_t, z_axis, rot_speed);
     world_objects.push_back(left_car);
 
     Transform right_car_t;
     right_car_t.SetPos(10, 0, 1);
-    WorldObject* right_car = new RotatingObject("Right spinny car", standard_shader, blue, car_mesh, right_car_t, -z_axis, speed);
+    WorldObject* right_car = new RotatingObject("Right spinny car", standard_shader, blue, car_mesh, right_car_t, x_axis, rot_speed);
     world_objects.push_back(right_car);
 
     //Create a standing monkey.
@@ -186,11 +197,6 @@ void CreateWorldObjects() {
     still_pos.SetPos(5, -1, -10);
     WorldObject* still_monkey = new WorldObject("Monkey Still", standard_shader, z_tex, monkey_mesh, still_pos);
     world_objects.push_back(still_monkey);
-
-    //Create a plane. Floor?
-    vec3 floor_pos = vec3(0, -3, 0);
-    WorldObject* floor = new OscilatingObject("Floor", standard_shader, z_tex, monkey_mesh, oriented_monkey, z_axis, speed, amplitude);
-    world_objects.push_back(floor);
 
     //Create the player.
     Transform car_pos;

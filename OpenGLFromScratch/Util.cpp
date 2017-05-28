@@ -37,7 +37,7 @@ glm::vec3 Math::GetUnitVector(glm::vec3 vec) {
 
 
 void Math::PrintVector(glm::vec3 vec) {
-    std::cout << "(" << vec.x << ", " << vec.y << ", " << vec.z << std::endl;
+    std::cout << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")" << std::endl;
 }
 
 
