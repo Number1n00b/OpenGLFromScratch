@@ -64,10 +64,6 @@ void WorldObject::Draw() {
     }
 }
 
-void WorldObject::Update(double delta) {
-    //Empty, should be overwritten in subclasses to define custom behaviour.
-}
-
 WorldObject::~WorldObject() {
     //Empty
     //@Incomplete? Should i set all class member pointers to null? I dont think so, it should be done automatically.

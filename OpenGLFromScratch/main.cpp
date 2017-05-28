@@ -77,6 +77,7 @@ To make the camera track an object, simply set its lookDirection to object.pos -
 #include "Player.h"
 #include "OscilatingObject.h"
 #include "RotatingObject.h"
+#include "StaticObject.h"
 
 //Input
 #include "InputEventHandler.h"
@@ -195,7 +196,7 @@ void CreateWorldObjects() {
     //Create a standing monkey.
     Transform still_pos;
     still_pos.SetPos(5, -1, -10);
-    WorldObject* still_monkey = new WorldObject("Monkey Still", standard_shader, z_tex, monkey_mesh, still_pos);
+    WorldObject* still_monkey = new StaticObject("Monkey Still", standard_shader, z_tex, monkey_mesh, still_pos);
     world_objects.push_back(still_monkey);
 
     //Create the player.

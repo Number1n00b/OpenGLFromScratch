@@ -16,7 +16,7 @@ class WorldObject
 
         virtual void Draw();
 
-        virtual void Update(double delta);
+        virtual void Update(double delta) = 0;
         //Some3DContainer GetBounds(); @Incomplete, this is where we would get the rough outlines for collision.
 
 	    virtual ~WorldObject();

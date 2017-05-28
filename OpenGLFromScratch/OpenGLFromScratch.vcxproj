@@ -153,6 +153,7 @@
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="OscilatingObject.cpp" />
     <ClCompile Include="RotatingObject.cpp" />
+    <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="WorldObject.cpp" />
     <ClCompile Include="InputEventHandler.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Display.h" />
     <ClInclude Include="OscilatingObject.h" />
     <ClInclude Include="RotatingObject.h" />
+    <ClInclude Include="StaticObject.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="WorldObject.h" />
     <ClInclude Include="InputEventHandler.h" />
