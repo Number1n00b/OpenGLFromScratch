@@ -13,7 +13,7 @@ class Player : public WorldObject, public KeyboardListener
 
         void NotifyKeyEvent(SDL_Event e);
 
-        void Update();
+        void Update(double delta);
 
         ~Player();
 

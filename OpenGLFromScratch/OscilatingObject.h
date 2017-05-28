@@ -11,7 +11,7 @@ class OscilatingObject : public WorldObject
 public:
     OscilatingObject(std::string name, Shader *shader, Texture *texture, Mesh *mesh, Transform transform, glm::vec3 axis, float speed, float amplitude);
 
-    void Update();
+    void Update(double delta);
 
     void SetSpeed(float speed);
 

@@ -15,7 +15,7 @@ OscilatingObject::OscilatingObject(std::string name, Shader *shader, Texture *te
 }
 
 
-void OscilatingObject::Update() {
+void OscilatingObject::Update(double delta) {
     GetTransform().SetPos(m_start_pos + (m_Axis * (m_Amp * sinf(m_Counter))));
     
     m_Counter += m_Speed;

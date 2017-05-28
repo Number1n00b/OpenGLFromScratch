@@ -34,7 +34,7 @@ void Player::NotifyKeyEvent(SDL_Event e) {
     }//End switch event type
 }
 
-void Player::Update() {
+void Player::Update(double delta) {
     //Check for angle modifier first
     if (keys_down[KEY_DEL]) {
         if (keys_down[KEY_UP]) {

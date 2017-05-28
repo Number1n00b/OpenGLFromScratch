@@ -1,17 +1,16 @@
-#include "WorldObject.h"
+#include "DrawableObject.h"
 
-bool WorldObject::camera_set = false;
-Camera* WorldObject::s_camera = nullptr;
+bool DrawableObject::camera_set = false;
+Camera* DrawableObject::s_camera = nullptr;
 
-void WorldObject::SetCamera(Camera *cam) {
+void DrawableObject::SetCamera(Camera *cam) {
     s_camera = cam;
     camera_set = true;
 }
 
-
-WorldObject::WorldObject(std::string name, Shader *shader, Texture *texture, Mesh *mesh, Transform transform) {
-    this->name = name;
-
+DrawableObject::DrawableObject(std::string name, Shader* shader, Texture *texture, Mesh *mesh, Transform transform)
+    : WorldObject(name, transform) 
+{
     //Check that none of the imports are null.
     if (!shader) {
         char error_message[100];
@@ -35,16 +34,9 @@ WorldObject::WorldObject(std::string name, Shader *shader, Texture *texture, Mes
     m_shader = shader;
     m_texture = texture;
     m_mesh = mesh;
-    m_transform = transform;
 }
 
-
-Transform& WorldObject::GetTransform() {
-    return m_transform;
-}
-
-
-void WorldObject::Draw() {
+void DrawableObject::Draw() {
     if (!camera_set) {
         std::cout << "!!!!!!!!!!! No camera set for Drawable class. !!!!!!!!!!!" << std::endl;
     }
@@ -64,11 +56,7 @@ void WorldObject::Draw() {
     }
 }
 
-void WorldObject::Update(double delta) {
-    //Empty, should be overwritten in subclasses to define custom behaviour.
-}
 
-WorldObject::~WorldObject() {
-    //Empty
-    //@Incomplete? Should i set all class member pointers to null? I dont think so, it should be done automatically.
+DrawableObject::~DrawableObject()
+{
 }

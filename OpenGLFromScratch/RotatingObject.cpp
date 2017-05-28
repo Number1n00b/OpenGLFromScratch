@@ -14,7 +14,7 @@ RotatingObject::RotatingObject(std::string name, Shader *shader, Texture *textur
 }
 
 
-void RotatingObject::Update() {
+void RotatingObject::Update(double delta) {
     GetTransform().SetRotation(m_start_angle + (m_Axis * m_Counter));
 
     m_Counter += m_Speed;

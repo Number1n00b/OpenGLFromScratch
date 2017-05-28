@@ -145,7 +145,7 @@ void CreateWorldObjects() {
 
     //Load the game object meshes.
     Mesh* monkey_mesh = new Mesh("./res/monkey3.obj");
-    Mesh* car_mesh = monkey_mesh;//new Mesh("./res/myCar.obj");
+    Mesh* car_mesh = /*monkey_mesh;*/new Mesh("./res/myCar.obj");
     Mesh* plane_mesh = new Mesh("./res/6x6_plane.obj");
 
     //This transform ensures the monkeys face the right direction on spawn.
@@ -157,7 +157,7 @@ void CreateWorldObjects() {
     vec3 x_axis = vec3(1, 0, 0);
     vec3 y_axis = vec3(0, 1, 0);
     vec3 z_axis = vec3(0, 0, 1);
-    float speed = 0.02;
+    float speed = 0.003;
     float amplitude = 5;
 
     //Create oscilating monkeys for perspective.
@@ -245,14 +245,14 @@ int main(int argc, char *argv[]) {
         time_since_last_frame += dt;
 
         //Do physics updates
-        if (game_state == RUNNING) {
+        if (game_state == RUNNING && dt != 0) {
             //Update all our objects.
             for (std::vector<WorldObject*>::iterator it = world_objects.begin(); it != world_objects.end(); it++) {
-                (*it)->Update();
+                (*it)->Update(dt);
             }
 
             //Update the main camera.
-            main_camera->Update();
+            main_camera->Update(dt);
         }
 
         //Cap FPS and render only when needed. @NOTE: Physics updates done only on every render call.

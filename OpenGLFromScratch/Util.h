@@ -10,4 +10,10 @@ namespace Math{
     float angle_between_vectors(glm::vec3 a, glm::vec3 b);
 
     glm::vec3 lerp(glm::vec3 start, glm::vec3 end, float percent);
+
+    glm::vec3 GetUnitVector(glm::vec3 vec);
+
+    void PrintVector(glm::vec3 vec);
+
+    bool RealEquals(double real, double value, double delta);
 }

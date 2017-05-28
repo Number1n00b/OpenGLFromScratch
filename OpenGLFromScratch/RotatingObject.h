@@ -11,9 +11,9 @@ class RotatingObject : public WorldObject
 public:
     RotatingObject(std::string name, Shader *shader, Texture *texture, Mesh *mesh, Transform transform, glm::vec3 axis, float speed);
 
-    void Update();
-
     void SetSpeed(float speed);
+
+    void Update(double delta);
 
     ~RotatingObject();
 
