@@ -44,12 +44,10 @@ NOTES:
 To make the camera track an object, simply set its lookDirection to object.pos - cam.pos
 */
 
-#pragma comment(lib, "winmm.lib")
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "glew32.lib")
-#pragma comment(lib, "SDL2.lib")
-#pragma comment(lib, "SDL2main.lib")
+//#pragma comment(lib, "opengl32.lib")
+//#pragma comment(lib, "glew32.lib")
+//#pragma comment(lib, "SDL2.lib")
+//#pragma comment(lib, "SDL2main.lib")
 
 //Standard libs.
 #include <iostream>
@@ -144,14 +142,14 @@ void CreateWorldObjects() {
     Shader *standard_shader = new Shader("./res/basicShader");
 
     //Load our tectures.
-    Texture* piranahs_tex = new Texture("./res/download.jpg");
     Texture* bricks_tex = new Texture("./res/bricks.jpg");
-    Texture* floor_tex = new Texture("./res/sand.jpg");
+    Texture* sand_tex = new Texture("./res/sand.jpg");
 
     Texture* x_tex = new Texture("./res/x.jpg");
     Texture* y_tex = new Texture("./res/y.jpg");
     Texture* z_tex = new Texture("./res/z.jpg");
-    Texture* blue = new Texture("./res/blue.jpg");
+    Texture* blue_tex = new Texture("./res/blue.jpg");
+    Texture* grid_tex = new Texture("./res/grid.jpg");
 
     //Load the game object meshes.
     Mesh* monkey_mesh = new Mesh("./res/monkey3.obj");
@@ -185,25 +183,32 @@ void CreateWorldObjects() {
 
     Transform left_car_t;
     left_car_t.SetPos(-10, 0, 1);
-    WorldObject* left_car = new RotatingObject("Left spinny car", standard_shader, blue, car_mesh, left_car_t, z_axis, rot_speed);
+    WorldObject* left_car = new RotatingObject("Left spinny car", standard_shader, blue_tex, car_mesh, left_car_t, z_axis, rot_speed);
     world_objects.push_back(left_car);
 
     Transform right_car_t;
     right_car_t.SetPos(10, 0, 1);
-    WorldObject* right_car = new RotatingObject("Right spinny car", standard_shader, blue, car_mesh, right_car_t, x_axis, rot_speed);
+    WorldObject* right_car = new RotatingObject("Right spinny car", standard_shader, blue_tex, car_mesh, right_car_t, x_axis, rot_speed);
     world_objects.push_back(right_car);
 
     //Create a standing monkey.
     Transform still_pos;
     still_pos.SetPos(5, -1, -10);
-    WorldObject* still_monkey = new StaticObject("Monkey Still", standard_shader, z_tex, monkey_mesh, still_pos);
+    WorldObject* still_monkey = new StaticObject("Monkey Still", standard_shader, grid_tex, monkey_mesh, still_pos);
     world_objects.push_back(still_monkey);
+
+    //Create a gloor.
+    Transform floor_pos;
+    floor_pos.SetPos(0, -3, 0);
+    WorldObject* floor = new StaticObject("Floor", standard_shader, grid_tex, plane_mesh, floor_pos);
+    world_objects.push_back(floor);
+
 
     //Create the player.
     Transform car_pos;
     car_pos.SetPos(-5, -1, -10);
     car_pos.SetRotation(0, 3.14/2, 0);
-    Player* car = new Player("Player One", standard_shader, blue, car_mesh, car_pos, event_handler);
+    Player* car = new Player("Player One", standard_shader, grid_tex, car_mesh, car_pos, event_handler);
     world_objects.push_back(car);
 }
 

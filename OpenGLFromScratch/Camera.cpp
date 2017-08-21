@@ -97,18 +97,20 @@ void Camera::UpdateRotation(double delta) {
 void Camera::HandleMovement(double delta) {
     glm::vec3 move_dir(0, 0, 0);
 
+    glm::vec3 curr_right = glm::cross(m_LookDirection, m_up);
+
     //WASD
     if (keys_down[KEY_W]) {
         move_dir += m_LookDirection;
     }
     if (keys_down[KEY_A]) {
-        move_dir += -glm::cross(m_LookDirection, m_up);
+        move_dir += -curr_right;
     }
     if (keys_down[KEY_S]) {
         move_dir += -m_LookDirection;
     }
     if (keys_down[KEY_D]) {
-        move_dir += glm::cross(m_LookDirection, m_up);
+        move_dir += curr_right;
     }
 
     //Up

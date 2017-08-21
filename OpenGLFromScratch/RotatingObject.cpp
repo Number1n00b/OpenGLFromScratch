@@ -15,16 +15,9 @@ RotatingObject::RotatingObject(std::string name, Shader *shader, Texture *textur
 
 
 void RotatingObject::Update(double delta) {
-    Math::PrintVector(GetTransform().GetRotation());
     glm::vec3 new_rotation = GetTransform().GetRotation() + m_Axis * float(delta / 1000 * m_Speed / 180 * M_PI);
 
-    Math::PrintVector(new_rotation);
-
     GetTransform().SetRotation(new_rotation);
-
-    Math::PrintVector(GetTransform().GetRotation());
-
-    std::cout << "\n" << std::endl;
 }
 
 
